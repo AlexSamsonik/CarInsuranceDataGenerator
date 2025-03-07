@@ -1,0 +1,13 @@
+[tool.poetry]
+name = "car_insurance_generator"
+version = "0.1.0"
+description = "A Python project to generate fictional car insurance data."
+authors = ["Aliaksandr Samsonik <aliaksandr.samsonik@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+pre-commit = "^4.1.0"
+faker = "^37.0.0"
+pytest = "^8.3.5"
+fastapi = "^0.115.11"
