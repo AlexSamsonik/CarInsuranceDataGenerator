@@ -12,13 +12,16 @@ faker = "^37.0.0"
 pytest = "^8.3.5"
 fastapi = "^0.115.11"
 
+[tool.pytest.ini_options]
+log_cli = true
+log_cli_level = "INFO"
+log_cli_format = "%(asctime)s [%(levelname)8s] %(message)s (%(filename)s:%(lineno)s)"
+log_cli_date_format = "%Y-%m-%d %H:%M:%S"
+
 [tool.ruff]
-# Allow lines to be as long as 120.
-line-length = 120
-# Assume Python 3.2
-target-version = "py312"
-# Enumerate all fixed violations.
-show-fixes = true
+line-length = 120 # Allow lines to be as long as 120.
+target-version = "py312" # Assume Python 3.12
+show-fixes = true # Enumerate all fixed violations.
 
 [tool.ruff.lint]
 fixable = ["ALL"]
