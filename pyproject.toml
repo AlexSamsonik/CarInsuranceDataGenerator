@@ -11,3 +11,37 @@ pre-commit = "^4.1.0"
 faker = "^37.0.0"
 pytest = "^8.3.5"
 fastapi = "^0.115.11"
+
+[tool.ruff]
+# Allow lines to be as long as 120.
+line-length = 120
+# Assume Python 3.2
+target-version = "py312"
+# Enumerate all fixed violations.
+show-fixes = true
+
+[tool.ruff.lint]
+fixable = ["ALL"]
+select = [
+    "D",  # pydocstyle
+    "D212",  # Multi-line docstring summary should start at the first line
+    "E101",  # Indentation contains mixed spaces and tabs
+    "E4",  # pycodestyle imports
+    "E7",  # pycodestyle
+    "E9",  # pycodestyle
+    "F",  # Pyflakes
+    "I",  # isort
+    "N",  # pep8-naming
+    "S",  # flake8-bandit
+    "W",  # pycodestyle warnings
+]
+ignore = [
+    "D104",  # Missing docstring in public package
+    "D105",  # Missing docstring in magic method
+    "D107",  # Missing docstring in init
+    "D401",  # First line of docstring should be in imperative mood: "{first_line}"
+    "S101",  # Use of `assert` detected
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "pep257"
