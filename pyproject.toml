@@ -19,9 +19,9 @@ log_cli_format = "%(asctime)s [%(levelname)8s] %(message)s (%(filename)s:%(linen
 log_cli_date_format = "%Y-%m-%d %H:%M:%S"
 
 [tool.ruff]
-line-length = 120 # Allow lines to be as long as 120.
-target-version = "py312" # Assume Python 3.12
-show-fixes = true # Enumerate all fixed violations.
+line-length = 120  # Allow lines to be as long as 120.
+target-version = "py312"  # Assume Python 3.12
+show-fixes = true  # Enumerate all fixed violations.
 
 [tool.ruff.lint]
 fixable = ["ALL"]
