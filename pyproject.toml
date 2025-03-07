@@ -13,6 +13,7 @@ faker = "^37.0.0"
 pytest = "^8.3.5"
 fastapi = "^0.115.11"
 ruff = "^0.9.10"
+uvicorn = "^0.34.0"
 
 [tool.pytest.ini_options]
 log_cli = true
