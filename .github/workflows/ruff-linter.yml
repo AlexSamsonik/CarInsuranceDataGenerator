@@ -32,5 +32,5 @@ jobs:
 
     - name: Lint with Ruff
       run: |
-        echo $(git ls-files '*.py')
+        git ls-files '*.py'
         poetry run ruff check $(git ls-files '*.py')
