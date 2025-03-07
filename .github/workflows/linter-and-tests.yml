@@ -34,3 +34,8 @@ jobs:
       run: |
         git ls-files '*.py'
         poetry run ruff check $(git ls-files '*.py')
+
+    - name: Test with pytest
+      run: |
+        find ./tests -name '*.py'
+        poetry run pytest $(find ./tests -name '*.py')
