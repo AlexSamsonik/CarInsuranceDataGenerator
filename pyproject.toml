@@ -1,9 +1,10 @@
 [tool.poetry]
-name = "car_insurance_generator"
+name = "CarInsuranceDataGenerator"
 version = "0.1.0"
 description = "A Python project to generate fictional car insurance data."
 authors = ["Aliaksandr Samsonik <aliaksandr.samsonik@gmail.com>"]
 readme = "README.md"
+packages = [{ include = "src" }]
 
 [tool.poetry.dependencies]
 python = "^3.12"
