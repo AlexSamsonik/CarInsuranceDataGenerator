@@ -2,6 +2,7 @@
 
 from datetime import datetime
 
+from dateutil.relativedelta import relativedelta
 from pytest import fail, fixture, mark, raises
 
 from src.owner import generate_birthdate, generate_first_name, generate_last_name
@@ -37,6 +38,16 @@ def birthdate_fx(request):
         return generate_birthdate(minimum_age=minimum_age, maximum_age=maximum_age)
     else:
         return generate_birthdate()
+
+
+@fixture
+def age_fx(request):
+    """Fixture that calculates age based on the birthdate_fx fixture."""
+    birth_date_str = request.getfixturevalue("birthdate_fx")
+    birth_date_obj = datetime.strptime(birth_date_str, "%m/%d/%Y")
+    today = datetime.today()
+    age = relativedelta(today, birth_date_obj).years
+    return age
 
 
 def test_generate_first_name_is_string(first_name_fx):
@@ -132,11 +143,10 @@ def test_generate_birthdate_custom_range(birthdate_fx):
     ],
 )
 def test_generate_birthdate_negative_value_error(minimum_age, maximum_age):
-    """Test that generate_birth_date raises exceptions for invalid age ranges.
+    """Test that generate_birthdate raises exceptions for invalid age ranges.
 
     :param minimum_age: The minimum age to test.
     :param maximum_age: The maximum age to test.
-    :return: None
     """
     with raises(ValueError):
         generate_birthdate(minimum_age=minimum_age, maximum_age=maximum_age)
@@ -156,11 +166,39 @@ def test_generate_birthdate_negative_value_error(minimum_age, maximum_age):
     ],
 )
 def test_generate_birthdate_negative_type_error(minimum_age, maximum_age):
-    """Test that generate_birth_date raises exceptions for invalid age ranges.
+    """Test that generate_birthdate raises exceptions for invalid age ranges.
 
     :param minimum_age: The minimum age to test.
     :param maximum_age: The maximum age to test.
-    :return: None
     """
     with raises(TypeError):
         generate_birthdate(minimum_age=minimum_age, maximum_age=maximum_age)
+
+
+@mark.parametrize(
+    "birthdate_fx",
+    [
+        (0, 0),
+        (0, 1),
+        (0, 100),
+        (1, 10),
+        (18, 18),
+        (18, 63),
+        (20, 30),
+        (25, 40),
+        (50, 60),
+        (63, 63),
+        (90, 100),
+    ],
+    indirect=True,
+)
+def test_generate_birthdate_age_range(birthdate_fx, age_fx, request):
+    """Test that the generated birthdate corresponds to the specified age range.
+
+    :param birthdate_fx: The generated birthdate from the fixture.
+    :param age_fx: Calculate age from the fixture.
+    """
+    minimum_age, maximum_age = request.node.callspec.params["birthdate_fx"]
+    assert minimum_age <= age_fx <= maximum_age, (
+        f"Generated age {age_fx} is not in the range {minimum_age}-{maximum_age}. Birth date: {birthdate_fx}."
+    )
