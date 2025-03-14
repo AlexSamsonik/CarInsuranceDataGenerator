@@ -43,3 +43,11 @@ def generate_birthdate(minimum_age: int = 18, maximum_age: int = 63) -> str:
 
     # Convert the date to the 'mm/dd/yyyy' string format
     return birth_date.strftime("%m/%d/%Y")
+
+
+def generate_address() -> str:
+    """Generate a realistic address.
+
+    :return: A string representing an address.
+    """
+    return Faker().address().replace("\n", ", ")
