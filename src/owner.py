@@ -50,4 +50,4 @@ def generate_address() -> str:
 
     :return: A string representing an address.
     """
-    return Faker().address()
+    return Faker().address().replace("\n", ", ")
