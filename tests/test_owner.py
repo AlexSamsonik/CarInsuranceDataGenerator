@@ -27,7 +27,7 @@ def last_name_fx() -> str:
 
 @fixture
 def birthdate_fx() -> str:
-    """Fixture to generate a birth ate.
+    """Fixture to generate a birthdate.
 
     :return: A string representing the generated birthdate in the format 'mm/dd/yyyy'.
     """
