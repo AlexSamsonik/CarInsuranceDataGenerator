@@ -24,5 +24,4 @@ def generate_birthdate(minimum_age: int = 18, maximum_age: int = 63) -> str:
 
     :return: A string representing the birth ate in the format 'mm/dd/yyyy'.
     """
-    birth_date = Faker().date_of_birth(minimum_age=minimum_age, maximum_age=maximum_age)
-    return birth_date.strftime("%m/%d/%Y")
+    return Faker().date_of_birth(minimum_age=minimum_age, maximum_age=maximum_age).strftime("%m/%d/%Y")
