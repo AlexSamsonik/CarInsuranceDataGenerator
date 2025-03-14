@@ -2,7 +2,7 @@
 
 from datetime import datetime
 
-from pytest import fail, fixture, mark
+from pytest import fail, fixture, mark, raises
 
 from src.owner import generate_birthdate, generate_first_name, generate_last_name
 
@@ -120,3 +120,47 @@ def test_generate_birthdate_custom_range(birthdate_fx):
     :param birthdate_fx: The generated birthdate from the fixture.
     """
     assert isinstance(birthdate_fx, str), f"Expected type 'str', but got {type(birthdate_fx)}"
+
+
+@mark.parametrize(
+    "minimum_age, maximum_age",
+    [
+        (-1, 63),
+        (18, -5),
+        (-10, -1),
+        (100, 50),
+    ],
+)
+def test_generate_birthdate_negative_value_error(minimum_age, maximum_age):
+    """Test that generate_birth_date raises exceptions for invalid age ranges.
+
+    :param minimum_age: The minimum age to test.
+    :param maximum_age: The maximum age to test.
+    :return: None
+    """
+    with raises(ValueError):
+        generate_birthdate(minimum_age=minimum_age, maximum_age=maximum_age)
+
+
+@mark.parametrize(
+    "minimum_age, maximum_age",
+    [
+        ("one", 63),
+        (18, "sixty-three"),
+        (18.5, 63),
+        ("two", "fife"),
+        (64, "ten"),
+        ("sixty-three", 22),
+        (18.5, 63),
+        (1.5, 6.3),
+    ],
+)
+def test_generate_birthdate_negative_type_error(minimum_age, maximum_age):
+    """Test that generate_birth_date raises exceptions for invalid age ranges.
+
+    :param minimum_age: The minimum age to test.
+    :param maximum_age: The maximum age to test.
+    :return: None
+    """
+    with raises(TypeError):
+        generate_birthdate(minimum_age=minimum_age, maximum_age=maximum_age)
