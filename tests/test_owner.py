@@ -2,7 +2,7 @@
 
 from datetime import datetime
 
-from pytest import fail, fixture
+from pytest import fail, fixture, mark
 
 from src.owner import generate_birthdate, generate_first_name, generate_last_name
 
@@ -26,12 +26,17 @@ def last_name_fx() -> str:
 
 
 @fixture
-def birthdate_fx() -> str:
-    """Fixture to generate a birthdate.
+def birthdate_fx(request):
+    """Fixture to generate a birthdate with custom age range.
 
-    :return: A string representing the generated birthdate in the format 'mm/dd/yyyy'.
+    :param request: Pytest request object for accessing parameters.
+    :return: A string representing the generated birthdate.
     """
-    return generate_birthdate()
+    if hasattr(request, "param"):
+        minimum_age, maximum_age = request.param
+        return generate_birthdate(minimum_age=minimum_age, maximum_age=maximum_age)
+    else:
+        return generate_birthdate()
 
 
 def test_generate_first_name_is_string(first_name_fx):
@@ -79,6 +84,38 @@ def test_generate_birthdate_format(birthdate_fx):
 
 def test_generate_birthdate_type(birthdate_fx):
     """Test that the generate_birthdate function returns a value of type str.
+
+    :param birthdate_fx: The generated birthdate from the fixture.
+    """
+    assert isinstance(birthdate_fx, str), f"Expected type 'str', but got {type(birthdate_fx)}"
+
+
+def test_generate_birthdate_default_range(birthdate_fx):
+    """Test that the birthdate_fx fixture works with default age range.
+
+    :param birthdate_fx: The generated birthdate from the fixture.
+    """
+    assert isinstance(birthdate_fx, str), f"Expected type 'str', but got {type(birthdate_fx)}"
+
+
+@mark.parametrize(
+    "birthdate_fx",
+    [
+        (18, 63),
+        (20, 30),
+        (50, 60),
+        (0, 100),
+        (18, 18),
+        (63, 63),
+        (25, 40),
+        (1, 10),
+        (90, 100),
+        (0, 0),
+    ],
+    indirect=True,
+)
+def test_generate_birthdate_custom_range(birthdate_fx):
+    """Test that the birthdate_fx fixture works with custom age ranges.
 
     :param birthdate_fx: The generated birthdate from the fixture.
     """
