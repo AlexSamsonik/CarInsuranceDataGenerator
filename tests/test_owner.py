@@ -75,3 +75,11 @@ def test_generate_birthdate_format(birthdate_fx):
         datetime.strptime(birthdate_fx, "%m/%d/%Y")
     except ValueError:
         fail(f"Birth date '{birthdate_fx}' does not match the format 'mm/dd/yyyy'.")
+
+
+def test_generate_birthdate_type(birthdate_fx):
+    """Test that the generate_birthdate function returns a value of type str.
+
+    :param birthdate_fx: The generated birthdate from the fixture.
+    """
+    assert isinstance(birthdate_fx, str), f"Expected type 'str', but got {type(birthdate_fx)}"
