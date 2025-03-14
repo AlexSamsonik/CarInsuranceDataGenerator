@@ -5,7 +5,7 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from pytest import fail, fixture, mark, raises
 
-from src.owner import generate_birthdate, generate_first_name, generate_last_name
+from src.owner import generate_address, generate_birthdate, generate_first_name, generate_last_name
 
 
 @fixture
@@ -27,7 +27,7 @@ def last_name_fx() -> str:
 
 
 @fixture
-def birthdate_fx(request):
+def birthdate_fx(request) -> str:
     """Fixture to generate a birthdate with custom age range.
 
     :param request: Pytest request object for accessing parameters.
@@ -41,13 +41,22 @@ def birthdate_fx(request):
 
 
 @fixture
-def age_fx(request):
+def age_fx(request) -> str:
     """Fixture that calculates age based on the birthdate_fx fixture."""
     birth_date_str = request.getfixturevalue("birthdate_fx")
     birth_date_obj = datetime.strptime(birth_date_str, "%m/%d/%Y")
     today = datetime.today()
     age = relativedelta(today, birth_date_obj).years
     return age
+
+
+@fixture
+def address_fx() -> str:
+    """Fixture to generate a realistic address.
+
+    :return: A string representing the generated address.
+    """
+    return generate_address()
 
 
 def test_generate_first_name_is_string(first_name_fx):
@@ -202,3 +211,52 @@ def test_generate_birthdate_age_range(birthdate_fx, age_fx, request):
     assert minimum_age <= age_fx <= maximum_age, (
         f"Generated age {age_fx} is not in the range {minimum_age}-{maximum_age}. Birth date: {birthdate_fx}."
     )
+
+
+def test_generate_address_type(address_fx):
+    """Test that the generate_address function returns a string.
+
+    :param address_fx: The generated address from the fixture.
+    """
+    assert isinstance(address_fx, str), f"Expected type 'str', but got {type(address_fx)}"
+
+
+def test_generate_address_not_empty(address_fx):
+    """Test that the generate_address function returns a non-empty string.
+
+    :param address_fx: The generated address from the fixture.
+    """
+    assert len(address_fx) > 0, f"Address should not be an empty string. Actual address: '{address_fx}'."
+
+
+def test_address_contains_house_number(address_fx):
+    """Test that the generated address contains a house number.
+
+    :param address_fx: The generated address from the fixture.
+    """
+    assert any(char.isdigit() for char in address_fx), "Address should contain a house number."
+
+
+def test_address_contains_zip_code(address_fx):
+    """Test that the generated address contains a zip code.
+
+    :param address_fx: The generated address from the fixture.
+    """
+    assert any(char.isdigit() for char in address_fx.split()[-1]), "Address should contain a zip code."
+
+
+def test_address_len_zip_code(address_fx):
+    """Test that the generated address contains a zip code with len 5.
+
+    :param address_fx: The generated address from the fixture.
+    """
+    actual_len = len(address_fx.split()[-1])
+    assert actual_len == 5, f"Address should contain a zip code with len 5. Actual len: '{actual_len}'."
+
+
+def test_address_contains_state_code(address_fx):
+    """Test that the generated address contains a state as upper two alpha char.
+
+    :param address_fx: The generated address from the fixture.
+    """
+    assert address_fx.split()[-2].isupper(), "Address should contain a state as upper two alpha char."
