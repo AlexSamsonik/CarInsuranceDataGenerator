@@ -1,6 +1,8 @@
 """Module provides functions to generate data for owner part in fake car insurance data."""
 
-from faker import Faker
+from src.singleton import FakerSingleton
+
+fake = FakerSingleton.get_instance()
 
 
 def generate_first_name() -> str:
@@ -8,7 +10,7 @@ def generate_first_name() -> str:
 
     :return: A string representing a first name.
     """
-    return Faker().first_name()
+    return fake.first_name()
 
 
 def generate_last_name() -> str:
@@ -16,7 +18,7 @@ def generate_last_name() -> str:
 
     :return: A string representing a last name.
     """
-    return Faker().last_name()
+    return fake.last_name()
 
 
 def generate_birthdate(minimum_age: int = 18, maximum_age: int = 63) -> str:
@@ -39,7 +41,7 @@ def generate_birthdate(minimum_age: int = 18, maximum_age: int = 63) -> str:
         raise ValueError("Minimum age cannot be greater than maximum age.")
 
     # Generate a random birthdate within the specified age range
-    birth_date = Faker().date_of_birth(minimum_age=minimum_age, maximum_age=maximum_age)
+    birth_date = fake.date_of_birth(minimum_age=minimum_age, maximum_age=maximum_age)
 
     # Convert the date to the 'mm/dd/yyyy' string format
     return birth_date.strftime("%m/%d/%Y")
@@ -50,4 +52,4 @@ def generate_address() -> str:
 
     :return: A string representing an address.
     """
-    return Faker().address().replace("\n", ", ")
+    return fake.address().replace("\n", ", ")
