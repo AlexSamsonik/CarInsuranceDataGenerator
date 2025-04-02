@@ -5,7 +5,7 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from pytest import fail, fixture, mark, raises
 
-from src.owner import generate_address, generate_birthdate, generate_first_name, generate_last_name
+from src.owner import generate_address, generate_birthdate, generate_first_name, generate_last_name, generate_phone
 
 
 @fixture
@@ -57,6 +57,15 @@ def address_fx() -> str:
     :return: A string representing the generated address.
     """
     return generate_address()
+
+
+@fixture
+def phone_fx():
+    """Fixture to generate a phone number.
+
+    :return: A string representing the generated phone number.
+    """
+    return generate_phone()
 
 
 def test_generate_first_name_is_string(first_name_fx):
@@ -260,3 +269,45 @@ def test_address_contains_state_code(address_fx):
     :param address_fx: The generated address from the fixture.
     """
     assert address_fx.split()[-2].isupper(), "Address should contain a state as upper two alpha char."
+
+
+def test_generate_phone_type(phone_fx):
+    """Test that the generate_phone function returns a string.
+
+    :param phone_fx: The generated phone number from the fixture.
+    """
+    assert isinstance(phone_fx, str), f"Expected type 'str', but got '{type(phone_fx)}'."
+
+
+def test_generate_phone_country_code(phone_fx):
+    """Test that the generated phone number matches the format +48 xxx xxx xxx.
+
+    :param phone_fx: The generated phone number from the fixture.
+    """
+    assert phone_fx.startswith("+48"), f"Phone number '{phone_fx}' does not start with '+48'."
+
+
+def test_generate_phone_len(phone_fx):
+    """Test that the generated phone number has 15 char len.
+
+    :param phone_fx: The generated phone number from the fixture.
+
+    """
+    assert len(phone_fx) == 15, f"Phone number '{phone_fx}' does not have the correct length."
+
+
+def test_generate_phone_prefix():
+    """Test that the generated phone number has a valid prefix.
+
+    This test generates 20 phone numbers and checks that each prefix is in the allowed list.
+
+    :return: None
+    """
+    prefixes = ["45", "50", "51", "53", "57", "60", "66", "69", "72", "73", "78", "79", "88"]
+
+    for _ in range(20):
+        phone_number = generate_phone()
+        generated_prefix = phone_number[4:6]
+        assert generated_prefix in prefixes, (
+            f"Phone number '{phone_number}' has an invalid prefix '{generated_prefix}'."
+        )
