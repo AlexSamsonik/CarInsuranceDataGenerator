@@ -1,6 +1,7 @@
 """Module provides tests for owner part in fake car insurance data."""
 
 from datetime import datetime
+from re import match
 
 from dateutil.relativedelta import relativedelta
 from pytest import fail, fixture, mark, raises
@@ -73,7 +74,7 @@ def test_generate_first_name_is_string(first_name_fx):
 
     :param first_name_fx: The generated first name from the fixture.
     """
-    assert isinstance(first_name_fx, str), f"Expected a string, but got {type(first_name_fx)}"
+    assert isinstance(first_name_fx, str), f"Expected a string, but got '{type(first_name_fx)}'."
 
 
 def test_generate_first_name_not_empty(first_name_fx):
@@ -81,7 +82,7 @@ def test_generate_first_name_not_empty(first_name_fx):
 
     :param first_name_fx: The generated first name from the fixture.
     """
-    assert len(first_name_fx) > 0, "First name should not be an empty string"
+    assert len(first_name_fx) > 0, "First name should not be an empty string."
 
 
 def test_generate_last_name_is_string(last_name_fx):
@@ -89,7 +90,7 @@ def test_generate_last_name_is_string(last_name_fx):
 
     :param last_name_fx: The generated last name from the fixture.
     """
-    assert isinstance(last_name_fx, str), f"Expected a string, but got {type(last_name_fx)}"
+    assert isinstance(last_name_fx, str), f"Expected a string, but got '{type(last_name_fx)}'"
 
 
 def test_generate_last_name_not_empty(last_name_fx):
@@ -97,7 +98,7 @@ def test_generate_last_name_not_empty(last_name_fx):
 
     :param last_name_fx: The generated last name from the fixture.
     """
-    assert len(last_name_fx) > 0, "Last name should not be an empty string"
+    assert len(last_name_fx) > 0, "Last name should not be an empty string."
 
 
 def test_generate_birthdate_format(birthdate_fx):
@@ -116,7 +117,7 @@ def test_generate_birthdate_type(birthdate_fx):
 
     :param birthdate_fx: The generated birthdate from the fixture.
     """
-    assert isinstance(birthdate_fx, str), f"Expected type 'str', but got {type(birthdate_fx)}"
+    assert isinstance(birthdate_fx, str), f"Expected type 'str', but got '{type(birthdate_fx)}'."
 
 
 def test_generate_birthdate_default_range(birthdate_fx):
@@ -124,7 +125,7 @@ def test_generate_birthdate_default_range(birthdate_fx):
 
     :param birthdate_fx: The generated birthdate from the fixture.
     """
-    assert isinstance(birthdate_fx, str), f"Expected type 'str', but got {type(birthdate_fx)}"
+    assert isinstance(birthdate_fx, str), f"Expected type 'str', but got '{type(birthdate_fx)}'."
 
 
 @mark.parametrize(
@@ -148,7 +149,7 @@ def test_generate_birthdate_custom_range(birthdate_fx):
 
     :param birthdate_fx: The generated birthdate from the fixture.
     """
-    assert isinstance(birthdate_fx, str), f"Expected type 'str', but got {type(birthdate_fx)}"
+    assert isinstance(birthdate_fx, str), f"Expected type 'str', but got '{type(birthdate_fx)}'."
 
 
 @mark.parametrize(
@@ -218,7 +219,7 @@ def test_generate_birthdate_age_range(birthdate_fx, age_fx, request):
     """
     minimum_age, maximum_age = request.node.callspec.params["birthdate_fx"]
     assert minimum_age <= age_fx <= maximum_age, (
-        f"Generated age {age_fx} is not in the range {minimum_age}-{maximum_age}. Birth date: {birthdate_fx}."
+        f"Generated age '{age_fx}' is not in the range '{minimum_age}-{maximum_age}'. Birth date: '{birthdate_fx}'."
     )
 
 
@@ -227,7 +228,7 @@ def test_generate_address_type(address_fx):
 
     :param address_fx: The generated address from the fixture.
     """
-    assert isinstance(address_fx, str), f"Expected type 'str', but got {type(address_fx)}"
+    assert isinstance(address_fx, str), f"Expected type 'str', but got '{type(address_fx)}'."
 
 
 def test_generate_address_not_empty(address_fx):
@@ -311,3 +312,9 @@ def test_generate_phone_prefix():
         assert generated_prefix in prefixes, (
             f"Phone number '{phone_number}' has an invalid prefix '{generated_prefix}'."
         )
+
+
+def test_generate_phone_format(phone_fx):
+    """Test that the generated phone number matches the format +48 xxx xxx xxx using a regular expression."""
+    phone_regex = r"^\+48\s\d{3}\s\d{3}\s\d{3}$"
+    assert match(phone_regex, phone_fx), f"Phone number '{phone_fx}' does not match the format '+48 xxx xxx xxx'."
