@@ -53,3 +53,22 @@ def generate_address() -> str:
     :return: A string representing an address.
     """
     return fake.address().replace("\n", ", ")
+
+
+def generate_phone() -> str:
+    """Generate a phone number in the format +48 xxx xxx xxx.
+
+    The prefix (first two digits) is chosen from a predefined list, and the rest
+    of the digits are generated randomly.
+
+    :return: A string representing a phone number.
+    """
+    prefixes = ["45", "50", "51", "53", "57", "60", "66", "69", "72", "73", "78", "79", "88"]
+
+    prefix = fake.random_element(prefixes)
+    random_digit = fake.random_digit()
+    middle_digits = fake.random_number(digits=3, fix_len=True)
+    last_digits = fake.random_number(digits=3, fix_len=True)
+
+    phone_number = f"+48 {prefix}{random_digit} {middle_digits} {last_digits}"
+    return phone_number
