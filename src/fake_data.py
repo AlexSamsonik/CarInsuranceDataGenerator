@@ -1,5 +1,6 @@
 """Module provides function to generate fake car insurance data."""
 
+from src.car import generate_vin
 from src.owner import generate_address, generate_birthdate, generate_first_name, generate_last_name, generate_phone
 from src.policy_number import generate_policy_number
 
@@ -19,7 +20,7 @@ def generate_fake_data():
             "phone": generate_phone(),
         },
         "car": {
-            "vin": "",
+            "vin": generate_vin(),
         },
         "insurance": {
             "start_date": "",
