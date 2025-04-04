@@ -75,4 +75,4 @@ def test_generate_fake_data_schema(fake_data):
     try:
         FakeDataModel(**fake_data)
     except ValidationError as e:
-        fail(f"Pydantic validation failed: {e}")
+        fail(f"Pydantic validation failed for FakeDataModel: '{e}'.")

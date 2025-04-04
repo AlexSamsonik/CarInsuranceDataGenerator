@@ -30,7 +30,9 @@ def generate_response():
 
 def test_read_root_status_code(root_response):
     """Test that the root endpoint returns a 200 status code."""
-    assert root_response.status_code == 200
+    assert root_response.status_code == 200, (
+        f"Status code validation failed. Actual status code: '{root_response.status_code}'. Expected: '200'."
+    )
 
 
 def test_read_root_response_content(root_response):
@@ -40,7 +42,9 @@ def test_read_root_response_content(root_response):
 
 def test_read_generate_status_code(generate_response):
     """Test that the generate endpoint returns a 200 status code."""
-    assert generate_response.status_code == 200
+    assert generate_response.status_code == 200, (
+        f"Status code validation failed. Actual status code: '{generate_response.status_code}'. Expected: '200'."
+    )
 
 
 def test_read_generate_response_content(generate_response):
@@ -48,4 +52,4 @@ def test_read_generate_response_content(generate_response):
     try:
         FakeDataModel(**generate_response.json())
     except ValidationError as e:
-        fail(f"Pydantic validation failed: {e}")
+        fail(f"Pydantic validation failed for FakeDataModel: '{e}'.")
